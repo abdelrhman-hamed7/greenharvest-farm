@@ -1,0 +1,18 @@
+﻿# Runtime files
+storage/sessions/*
+!storage/sessions/.gitkeep
+storage/*.log
+
+# Uploaded product files created during local testing
+uploads/products/*
+!uploads/products/.gitkeep
+
+# Local environment files
+.env
+*.local
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

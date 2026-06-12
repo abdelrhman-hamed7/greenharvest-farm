@@ -1,0 +1,7 @@
+.git
+.github
+storage/sessions/*
+uploads/products/*
+*.log
+Dockerfile
+docker-compose.yml
