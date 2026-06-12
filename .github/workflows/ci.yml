@@ -1,0 +1,38 @@
+name: GreenHarvest Farm CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  php-lint:
+    name: PHP syntax check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: Lint PHP files
+        run: |
+          find . -name "*.php" \
+            -not -path "./storage/*" \
+            -print0 | xargs -0 -n1 php -l
+
+  docker-build:
+    name: Docker build check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t greenharvest-farm .
