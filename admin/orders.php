@@ -39,7 +39,16 @@ if ($search !== '') {
     $params['search_email'] = '%' . $search . '%';
 }
 
-$sql .= ' GROUP BY orders.id
+$sql .= ' GROUP BY orders.id,
+                   orders.order_number,
+                   orders.total_amount,
+                   orders.status,
+                   orders.payment_method,
+                   orders.payment_status,
+                   orders.created_at,
+                   customers.full_name,
+                   customers.email,
+                   customers.phone
           ORDER BY orders.created_at DESC';
 
 $stmt = $pdo->prepare($sql);
