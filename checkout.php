@@ -213,34 +213,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('Your cart is empty.');
             }
 
-            $customerStmt = $pdo->prepare(
+            $customerId = insertAndReturnId(
+                $pdo,
                 'INSERT INTO customers (full_name, email, phone, address, city, notes)
-                 VALUES (:full_name, :email, :phone, :address, :city, :notes)'
+                 VALUES (:full_name, :email, :phone, :address, :city, :notes)',
+                [
+                    'full_name' => $formData['full_name'],
+                    'email' => $formData['email'],
+                    'phone' => $formData['phone'],
+                    'address' => $formData['address'],
+                    'city' => $formData['city'],
+                    'notes' => $formData['notes'],
+                ]
             );
-            $customerStmt->execute([
-                'full_name' => $formData['full_name'],
-                'email' => $formData['email'],
-                'phone' => $formData['phone'],
-                'address' => $formData['address'],
-                'city' => $formData['city'],
-                'notes' => $formData['notes'],
-            ]);
-            $customerId = (int) $pdo->lastInsertId();
 
-            $orderStmt = $pdo->prepare(
+            $orderId = insertAndReturnId(
+                $pdo,
                 'INSERT INTO orders (customer_id, order_number, total_amount, status, payment_method, payment_phone, payment_status)
-                 VALUES (:customer_id, :order_number, :total_amount, :status, :payment_method, :payment_phone, :payment_status)'
+                 VALUES (:customer_id, :order_number, :total_amount, :status, :payment_method, :payment_phone, :payment_status)',
+                [
+                    'customer_id' => $customerId,
+                    'order_number' => generateOrderNumber(),
+                    'total_amount' => $orderTotal,
+                    'status' => 'pending',
+                    'payment_method' => $formData['payment_method'],
+                    'payment_phone' => $formData['payment_method'] === 'Cash on Delivery' ? null : $formData['payment_phone'],
+                    'payment_status' => 'pending',
+                ]
             );
-            $orderStmt->execute([
-                'customer_id' => $customerId,
-                'order_number' => generateOrderNumber(),
-                'total_amount' => $orderTotal,
-                'status' => 'pending',
-                'payment_method' => $formData['payment_method'],
-                'payment_phone' => $formData['payment_method'] === 'Cash on Delivery' ? null : $formData['payment_phone'],
-                'payment_status' => 'pending',
-            ]);
-            $orderId = (int) $pdo->lastInsertId();
 
             $itemStmt = $pdo->prepare(
                 'INSERT INTO order_items (order_id, product_id, product_name, quantity, price, subtotal)

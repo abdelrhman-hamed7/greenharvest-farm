@@ -11,15 +11,42 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Database settings. The getenv() values will be useful when we run with Docker.
+// Database settings. Render free databases use PostgreSQL, while old local setups can still use MySQL.
+$databaseUrl = getenv('DATABASE_URL') ?: '';
+$driver = getenv('DB_DRIVER') ?: 'pgsql';
 $host = getenv('DB_HOST') ?: 'localhost';
-$port = getenv('DB_PORT') ?: '3307';
+$port = getenv('DB_PORT') ?: ($driver === 'mysql' ? '3307' : '5432');
 $database = getenv('DB_NAME') ?: 'greenharvest_farm';
-$username = getenv('DB_USER') ?: 'root';
-$password = getenv('DB_PASS') ?: '1234';
-$charset = 'utf8mb4';
+$username = getenv('DB_USER') ?: ($driver === 'mysql' ? 'root' : 'greenharvest_user');
+$password = getenv('DB_PASS') ?: ($driver === 'mysql' ? '1234' : 'greenharvest_pass');
+$sslMode = '';
 
-$dsn = "mysql:host={$host};port={$port};dbname={$database};charset={$charset}";
+if ($databaseUrl !== '') {
+    $url = parse_url($databaseUrl);
+
+    if ($url && isset($url['scheme']) && strpos($url['scheme'], 'postgres') === 0) {
+        $driver = 'pgsql';
+        $host = $url['host'] ?? $host;
+        $port = $url['port'] ?? '5432';
+        $database = isset($url['path']) ? ltrim($url['path'], '/') : $database;
+        $username = isset($url['user']) ? rawurldecode($url['user']) : $username;
+        $password = isset($url['pass']) ? rawurldecode($url['pass']) : $password;
+
+        if (!empty($url['query'])) {
+            parse_str($url['query'], $query);
+            $sslMode = $query['sslmode'] ?? '';
+        }
+    }
+}
+
+if ($driver === 'mysql') {
+    $dsn = "mysql:host={$host};port={$port};dbname={$database};charset=utf8mb4";
+} else {
+    $dsn = "pgsql:host={$host};port={$port};dbname={$database}";
+    if ($sslMode !== '') {
+        $dsn .= ";sslmode={$sslMode}";
+    }
+}
 
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -32,6 +59,28 @@ try {
 } catch (PDOException $e) {
     // Keep the public error simple. The real error is useful only during development.
     die('Database connection failed. Please check your database settings.');
+}
+
+function databaseDriver()
+{
+    global $driver;
+    return $driver;
+}
+
+function insertAndReturnId(PDO $pdo, $sql, array $params)
+{
+    if (databaseDriver() === 'pgsql') {
+        $sql .= ' RETURNING id';
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    if (databaseDriver() === 'pgsql') {
+        return (int) $stmt->fetchColumn();
+    }
+
+    return (int) $pdo->lastInsertId();
 }
 
 // Escape output before displaying database/user data in HTML.

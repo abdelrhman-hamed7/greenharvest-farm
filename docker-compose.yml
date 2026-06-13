@@ -5,8 +5,9 @@ services:
     ports:
       - "8080:80"
     environment:
+      DB_DRIVER: pgsql
       DB_HOST: db
-      DB_PORT: 3306
+      DB_PORT: 5432
       DB_NAME: greenharvest_farm
       DB_USER: greenharvest_user
       DB_PASS: greenharvest_pass
@@ -19,23 +20,22 @@ services:
         condition: service_healthy
 
   db:
-    image: mysql:8.0
+    image: postgres:16-alpine
     container_name: greenharvest_db
     ports:
-      - "3308:3306"
+      - "5433:5432"
     environment:
-      MYSQL_DATABASE: greenharvest_farm
-      MYSQL_USER: greenharvest_user
-      MYSQL_PASSWORD: greenharvest_pass
-      MYSQL_ROOT_PASSWORD: rootpass
+      POSTGRES_DB: greenharvest_farm
+      POSTGRES_USER: greenharvest_user
+      POSTGRES_PASSWORD: greenharvest_pass
     volumes:
-      - greenharvest_db_data:/var/lib/mysql
-      - ./database/greenharvest.sql:/docker-entrypoint-initdb.d/greenharvest.sql:ro
+      - greenharvest_pg_data:/var/lib/postgresql/data
+      - ./database/greenharvest-postgres.sql:/docker-entrypoint-initdb.d/greenharvest-postgres.sql:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass"]
+      test: ["CMD-SHELL", "pg_isready -U greenharvest_user -d greenharvest_farm"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  greenharvest_db_data:
+  greenharvest_pg_data:

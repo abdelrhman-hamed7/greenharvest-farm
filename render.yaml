@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: greenharvest-farm
+    runtime: docker
+    plan: free
+    branch: main
+    autoDeployTrigger: checksPass
+    healthCheckPath: /login.php
+    envVars:
+      - key: DB_DRIVER
+        value: pgsql
+      - key: DATABASE_URL
+        fromDatabase:
+          name: greenharvest-db
+          property: connectionString
+      - key: ADMIN_USER
+        value: admin
+      - key: ADMIN_PASS
+        value: admin3017
+      - key: PORT
+        value: 80
+
+databases:
+  - name: greenharvest-db
+    plan: free
+    databaseName: greenharvest_farm
+    user: greenharvest_user

@@ -73,23 +73,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $insertStmt = $pdo->prepare(
+        $accountId = insertAndReturnId(
+            $pdo,
             'INSERT INTO customer_accounts (full_name, last_name, email, phone, address, city, password_hash)
-             VALUES (:full_name, :last_name, :email, :phone, :address, :city, :password_hash)'
+             VALUES (:full_name, :last_name, :email, :phone, :address, :city, :password_hash)',
+            [
+                'full_name' => $formData['full_name'],
+                'last_name' => $formData['last_name'],
+                'email' => $formData['email'],
+                'phone' => $formData['phone'],
+                'address' => $formData['address'],
+                'city' => $formData['city'],
+                'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+            ]
         );
-        $insertStmt->execute([
-            'full_name' => $formData['full_name'],
-            'last_name' => $formData['last_name'],
-            'email' => $formData['email'],
-            'phone' => $formData['phone'],
-            'address' => $formData['address'],
-            'city' => $formData['city'],
-            'password_hash' => password_hash($password, PASSWORD_DEFAULT),
-        ]);
 
         session_regenerate_id(true);
         $_SESSION['user_logged_in'] = true;
-        $_SESSION['user_id'] = (int) $pdo->lastInsertId();
+        $_SESSION['user_id'] = $accountId;
         $_SESSION['user_name'] = $formData['full_name'];
 
         header('Location: user-dashboard.php');
