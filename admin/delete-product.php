@@ -68,8 +68,9 @@ require_once '../includes/header.php';
 
             <div class="delete-product-preview">
                 <div class="admin-product-thumb">
-                    <?php if (!empty($product['image_path'])): ?>
-                        <img src="../<?php echo e($product['image_path']); ?>" alt="<?php echo e($product['name']); ?>">
+                    <?php $imageSrc = productImageSrc($product, '../'); ?>
+                    <?php if ($imageSrc !== ''): ?>
+                        <img src="<?php echo e($imageSrc); ?>" alt="<?php echo e($product['name']); ?>">
                     <?php else: ?>
                         <i class="bi bi-image"></i>
                     <?php endif; ?>

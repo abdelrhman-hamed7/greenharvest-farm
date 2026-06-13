@@ -100,6 +100,7 @@ docker compose up --build
 ## Database Files
 
 - `database/greenharvest-postgres.sql` is the main database file for Render PostgreSQL and Docker PostgreSQL.
+- `database/add-product-image-data.sql` is a small migration for existing Render databases to support persistent uploaded images.
 - `database/greenharvest.sql` is kept only as a backup MySQL version.
 
 ## Render Deployment
@@ -132,6 +133,12 @@ After import, open the Render web service URL and test:
 /products.php
 /cart.php
 /admin/dashboard.php
+```
+
+If you already imported the database before the image persistence update, run this migration once:
+
+```powershell
+Get-Content database\add-product-image-data.sql | docker run --rm -i postgres:16-alpine psql "PASTE_RENDER_EXTERNAL_DATABASE_URL_HERE"
 ```
 
 ## Environment Variables
@@ -179,7 +186,7 @@ uploads/products/
 
 The database stores the image path. Public pages display the database image path. If a product has no image, the website shows a placeholder.
 
-Note: Render free web services have an ephemeral filesystem, so uploaded images may be lost after redeploy or restart. For a student demo this is acceptable evidence; for production, use persistent storage or cloud object storage.
+Render free web services have an ephemeral filesystem, so the project stores uploaded images in PostgreSQL as well as `uploads/products/`. Public pages use `product-image.php?id=...` to display the persistent database copy.
 
 ## Security Notes
 

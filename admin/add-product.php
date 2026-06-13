@@ -46,12 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Product stock must be zero or more.';
     }
 
-    $imagePath = uploadProductImage($_FILES['image'] ?? [], $errors);
+    $imageUpload = uploadProductImage($_FILES['image'] ?? [], $errors);
+    $imagePath = $imageUpload['path'] ?? null;
+    $imageData = $imageUpload['data'] ?? null;
+    $imageMime = $imageUpload['mime'] ?? null;
 
     if (empty($errors)) {
         $stmt = $pdo->prepare(
-            'INSERT INTO products (category_id, name, description, price, stock, image_path, is_featured, status)
-             VALUES (:category_id, :name, :description, :price, :stock, :image_path, :is_featured, :status)'
+            'INSERT INTO products (category_id, name, description, price, stock, image_path, image_data, image_mime, is_featured, status)
+             VALUES (:category_id, :name, :description, :price, :stock, :image_path, :image_data, :image_mime, :is_featured, :status)'
         );
         $stmt->execute([
             'category_id' => $categoryId,
@@ -60,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'price' => $price,
             'stock' => $stock,
             'image_path' => $imagePath,
+            'image_data' => $imageData,
+            'image_mime' => $imageMime,
             'is_featured' => $isFeatured,
             'status' => $status,
         ]);

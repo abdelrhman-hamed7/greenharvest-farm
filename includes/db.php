@@ -143,3 +143,22 @@ function displayProductPrice($product)
 
     return $price;
 }
+
+function productImageSrc($product, $basePath = '')
+{
+    $productId = $product['id'] ?? $product['product_id'] ?? null;
+
+    if (!empty($product['image_data']) && !empty($product['image_mime']) && $productId) {
+        return $basePath . 'product-image.php?id=' . urlencode((string) $productId);
+    }
+
+    if (!empty($product['has_image_data']) && $productId) {
+        return $basePath . 'product-image.php?id=' . urlencode((string) $productId);
+    }
+
+    if (!empty($product['image_path'])) {
+        return $basePath . ltrim($product['image_path'], '/');
+    }
+
+    return '';
+}

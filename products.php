@@ -104,8 +104,9 @@ $products = $productStmt->fetchAll();
                     <div class="col-md-6 col-xl-4">
                         <div class="product-card clickable-card" data-href="product.php?id=<?php echo e($product['id']); ?>" role="link" tabindex="0" aria-label="View details for <?php echo e($product['name']); ?>">
                             <div class="product-image-wrap">
-                                <?php if (!empty($product['image_path'])): ?>
-                                    <img src="<?php echo e($product['image_path']); ?>" alt="<?php echo e($product['name']); ?>">
+                                <?php $imageSrc = productImageSrc($product); ?>
+                                <?php if ($imageSrc !== ''): ?>
+                                    <img src="<?php echo e($imageSrc); ?>" alt="<?php echo e($product['name']); ?>">
                                 <?php else: ?>
                                     <div class="product-placeholder">
                                         <i class="bi bi-image"></i>

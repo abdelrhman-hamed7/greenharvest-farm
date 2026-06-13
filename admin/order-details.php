@@ -61,7 +61,7 @@ if (!$order) {
 }
 
 $itemsStmt = $pdo->prepare(
-    'SELECT order_items.*, products.image_path
+    'SELECT order_items.*, products.image_path, products.image_data, products.image_mime
      FROM order_items
      LEFT JOIN products ON order_items.product_id = products.id
      WHERE order_items.order_id = :order_id
@@ -127,8 +127,9 @@ require_once '../includes/header.php';
                                         <td>
                                             <div class="admin-product-cell">
                                                 <div class="admin-product-thumb">
-                                                    <?php if (!empty($item['image_path'])): ?>
-                                                        <img src="../<?php echo e($item['image_path']); ?>" alt="<?php echo e($item['product_name']); ?>">
+                                                    <?php $imageSrc = productImageSrc($item, '../'); ?>
+                                                    <?php if ($imageSrc !== ''): ?>
+                                                        <img src="<?php echo e($imageSrc); ?>" alt="<?php echo e($item['product_name']); ?>">
                                                     <?php else: ?>
                                                         <i class="bi bi-image"></i>
                                                     <?php endif; ?>

@@ -65,8 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Product stock must be zero or more.';
     }
 
-    $newImagePath = uploadProductImage($_FILES['image'] ?? [], $errors);
+    $imageUpload = uploadProductImage($_FILES['image'] ?? [], $errors);
+    $newImagePath = $imageUpload['path'] ?? null;
     $imagePath = $newImagePath ?: $product['image_path'];
+    $imageData = $imageUpload['data'] ?? ($product['image_data'] ?? null);
+    $imageMime = $imageUpload['mime'] ?? ($product['image_mime'] ?? null);
 
     if (empty($errors)) {
         $updateStmt = $pdo->prepare(
@@ -77,6 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  price = :price,
                  stock = :stock,
                  image_path = :image_path,
+                 image_data = :image_data,
+                 image_mime = :image_mime,
                  is_featured = :is_featured,
                  status = :status
              WHERE id = :id'
@@ -88,6 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'price' => $price,
             'stock' => $stock,
             'image_path' => $imagePath,
+            'image_data' => $imageData,
+            'image_mime' => $imageMime,
             'is_featured' => $isFeatured,
             'status' => $status,
             'id' => $productId,
@@ -137,8 +144,9 @@ require_once '../includes/header.php';
                 <div class="row g-3">
                     <div class="col-lg-4">
                         <div class="admin-current-image">
-                            <?php if (!empty($product['image_path'])): ?>
-                                <img src="../<?php echo e($product['image_path']); ?>" alt="<?php echo e($product['name']); ?>">
+                            <?php $imageSrc = productImageSrc($product, '../'); ?>
+                            <?php if ($imageSrc !== ''): ?>
+                                <img src="<?php echo e($imageSrc); ?>" alt="<?php echo e($product['name']); ?>">
                             <?php else: ?>
                                 <div>
                                     <i class="bi bi-image"></i>

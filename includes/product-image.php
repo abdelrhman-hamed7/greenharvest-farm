@@ -31,6 +31,20 @@ function uploadProductImage(array $file, array &$errors)
         return null;
     }
 
+    $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    $mimeType = $imageInfo['mime'] ?? '';
+
+    if (!in_array($mimeType, $allowedMimeTypes, true)) {
+        $errors[] = 'Only JPG, JPEG, PNG, and WEBP images are allowed.';
+        return null;
+    }
+
+    $imageData = file_get_contents($file['tmp_name']);
+    if ($imageData === false) {
+        $errors[] = 'Could not read the uploaded image.';
+        return null;
+    }
+
     $uploadDirectory = dirname(__DIR__) . '/uploads/products/';
     if (!is_dir($uploadDirectory)) {
         mkdir($uploadDirectory, 0777, true);
@@ -44,7 +58,11 @@ function uploadProductImage(array $file, array &$errors)
         return null;
     }
 
-    return 'uploads/products/' . $fileName;
+    return [
+        'path' => 'uploads/products/' . $fileName,
+        'data' => base64_encode($imageData),
+        'mime' => $mimeType,
+    ];
 }
 
 function removeProductImage($imagePath)

@@ -23,6 +23,8 @@ CREATE TABLE products (
     price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
     stock INT NOT NULL DEFAULT 0 CHECK (stock >= 0),
     image_path VARCHAR(255) DEFAULT NULL,
+    image_data TEXT DEFAULT NULL,
+    image_mime VARCHAR(80) DEFAULT NULL,
     is_featured SMALLINT NOT NULL DEFAULT 0 CHECK (is_featured IN (0, 1)),
     status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
