@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     if ($login === '' || $password === '') {
-        $error = 'Please enter your email/admin username and password.';
+        $error = 'Please enter your customer email or admin username and password.';
     } elseif (hash_equals(getAdminUsername(), $login) && hash_equals(getAdminPassword(), $password)) {
         session_regenerate_id(true);
         unset($_SESSION['user_logged_in'], $_SESSION['user_id'], $_SESSION['user_name']);
@@ -68,7 +68,7 @@ require_once 'includes/header.php';
                     <span class="brand-icon"><i class="bi bi-person-circle"></i></span>
                     <div>
                         <h2>Sign In</h2>
-                        <p>Use your customer account or admin login.</p>
+                        <p>Customers sign in with email. Admin signs in with username.</p>
                     </div>
                 </div>
 
@@ -78,8 +78,8 @@ require_once 'includes/header.php';
 
                 <form action="login.php" method="post">
                     <div class="mb-3">
-                        <label for="login" class="form-label fw-bold">Email or Admin Username</label>
-                        <input type="text" class="form-control" id="login" name="login" value="<?php echo e($login); ?>" required autofocus>
+                        <label for="login" class="form-label fw-bold">Customer Email or Admin Username</label>
+                        <input type="text" class="form-control" id="login" name="login" value="<?php echo e($login); ?>" placeholder="Email for customers, username for admin" required autofocus>
                     </div>
                     <div class="mb-4">
                         <label for="password" class="form-label fw-bold">Password</label>
