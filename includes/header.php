@@ -101,13 +101,10 @@ unset($_SESSION['flash_message']);
                             </li>
                         <?php elseif ($userLoggedIn): ?>
                             <li class="nav-item">
-                                <span class="customer-nav-badge">
+                                <a class="customer-nav-badge <?php echo $currentPage === 'user-dashboard.php' ? 'active' : ''; ?>" href="user-dashboard.php" aria-label="Open customer dashboard">
                                     <i class="bi bi-person-circle me-1"></i>
-                                    Hi, <?php echo e($userDisplayName); ?>
-                                </span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?php echo $currentPage === 'user-dashboard.php' ? 'active' : ''; ?>" href="user-dashboard.php">Dashboard</a>
+                                    <?php echo e($userDisplayName); ?>
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <a class="btn btn-outline-success login-nav-button ms-lg-2" href="logout.php">
