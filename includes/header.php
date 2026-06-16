@@ -8,6 +8,10 @@ $isAdminPage = strpos($scriptPath, '/admin/') !== false;
 $basePath = $isAdminPage ? '../' : '';
 $adminLoggedIn = !empty($_SESSION['admin_logged_in']);
 $userLoggedIn = !empty($_SESSION['user_logged_in']);
+$userDisplayName = $userLoggedIn ? trim($_SESSION['user_name'] ?? 'Customer') : '';
+if ($userDisplayName === '') {
+    $userDisplayName = 'Customer';
+}
 $brandHref = $isAdminPage ? ($adminLoggedIn ? 'dashboard.php' : '../login.php') : 'home.php';
 
 $cartCount = 0;
@@ -96,6 +100,12 @@ unset($_SESSION['flash_message']);
                                 <a class="nav-link" href="admin/logout.php">Logout</a>
                             </li>
                         <?php elseif ($userLoggedIn): ?>
+                            <li class="nav-item">
+                                <span class="customer-nav-badge">
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    Hi, <?php echo e($userDisplayName); ?>
+                                </span>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link <?php echo $currentPage === 'user-dashboard.php' ? 'active' : ''; ?>" href="user-dashboard.php">Dashboard</a>
                             </li>

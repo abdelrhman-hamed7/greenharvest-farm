@@ -115,6 +115,22 @@ a {
     color: var(--gh-green-dark);
 }
 
+.customer-nav-badge {
+    align-items: center;
+    background: var(--gh-green-soft);
+    border: 1px solid var(--gh-border);
+    border-radius: 999px;
+    color: var(--gh-green-dark);
+    display: inline-flex;
+    font-size: 0.92rem;
+    font-weight: 700;
+    max-width: 180px;
+    overflow: hidden;
+    padding: 0.45rem 0.75rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .app-toast-container {
     position: fixed;
     right: 1rem;
@@ -1601,6 +1617,13 @@ a {
 
     .navbar-nav {
         padding-top: 1rem;
+    }
+
+    .customer-nav-badge {
+        justify-content: center;
+        margin-top: 0.5rem;
+        max-width: none;
+        width: 100%;
     }
 
     .cart-button {
