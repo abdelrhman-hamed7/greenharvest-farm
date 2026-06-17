@@ -68,30 +68,6 @@ ADMIN_USER=admin
 ADMIN_PASS=admin3017
 ```
 
-
-
-## GitHub Actions CI
-
-The CI workflow is stored in:
-
-```text
-.github/workflows/ci.yml
-```
-
-It checks PHP syntax and verifies that the Docker image can build.
-
-## Product Images
-
-Product images are uploaded from the admin dashboard. The files are stored in:
-
-```text
-uploads/products/
-```
-
-The database stores the image path. Public pages display the database image path. If a product has no image, the website shows a placeholder.
-
-Render free web services have an ephemeral filesystem, so the project stores uploaded images in PostgreSQL as well as `uploads/products/`. Public pages use `product-image.php?id=...` to display the persistent database copy.
-
 ## Security Notes
 
 - PDO prepared statements are used for database queries.
@@ -114,37 +90,33 @@ Render free web services have an ephemeral filesystem, so the project stores upl
   <img width="1872" height="906" alt="image" src="https://github.com/user-attachments/assets/90d2a7dc-8f6f-45a3-93a3-82b5d960b2e0" />
 
 - Product details page
+  <img width="1876" height="906" alt="image" src="https://github.com/user-attachments/assets/efdaf290-a16b-416e-9cdc-b1706e91fce4" />
+
 - Cart page
+  <img width="1873" height="898" alt="image" src="https://github.com/user-attachments/assets/6add01cb-5058-4a56-bf53-076fdfcb874e" />
+
 - Checkout page with payment methods
+  <img width="1866" height="897" alt="image" src="https://github.com/user-attachments/assets/cb32b125-e201-46a9-a258-a45d8f2079ef" />
+
 - Order success page
+  <img width="1891" height="911" alt="image" src="https://github.com/user-attachments/assets/f6d1f0f4-024a-4008-9988-990af58c14bf" />
+
 - Customer dashboard
+  <img width="1867" height="898" alt="image" src="https://github.com/user-attachments/assets/a06411a0-1200-482a-817f-68c9bffef871" />
+
 - Admin dashboard
+  <img width="1872" height="898" alt="image" src="https://github.com/user-attachments/assets/95ba1783-74e6-4999-81ed-d5f051203440" />
+
 - Admin products page
+  <img width="1872" height="901" alt="image" src="https://github.com/user-attachments/assets/a96872aa-4932-40a1-9c34-a7b37810f234" />
+
 - Add product page with image upload
+  <img width="1875" height="906" alt="image" src="https://github.com/user-attachments/assets/e280114d-3c38-4f8b-ba12-b9e0ccafa1db" />
+
 - Admin orders page
-- Admin order details page
-- Docker running evidence
-- GitHub Actions CI evidence
-- Render web service evidence
-- Render PostgreSQL evidence
+  <img width="1876" height="906" alt="image" src="https://github.com/user-attachments/assets/2bc0a51e-ac0c-4fa9-a0f2-2f4f3dae23ff" />
 
-## Report Structure
 
-1. Introduction
-2. Project objectives
-3. System users
-4. Technologies used
-5. System architecture
-6. Database design
-7. Main features
-8. Screenshots
-9. Security measures
-10. Docker setup
-11. GitHub and CI/CD
-12. Render deployment
-13. Challenges faced
-14. Future improvements
-15. Conclusion
 
 ## Future Improvements
 
