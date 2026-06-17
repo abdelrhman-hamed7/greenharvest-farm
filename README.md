@@ -6,8 +6,6 @@ GreenHarvest Farm is a complete PHP e-commerce web application for a modern orga
 
 ## Project Context
 
-- Course: EWA408510 - E-Commerce and Web Application
-- Project type: Final Examination Project-Based
 - Business idea: Farm e-commerce website for GreenHarvest Farm
 - Technology: PHP, PostgreSQL, PDO, HTML, CSS, JavaScript, Bootstrap 5
 - Deployment target: Render Docker Web Service with Render PostgreSQL free database
@@ -40,68 +38,6 @@ Username: admin
 Password: admin3017
 ```
 
-## Folder Structure
-
-```text
-greenharvest-farm/
-|-- admin/
-|-- assets/
-|-- css/
-|-- database/
-|   |-- greenharvest-postgres.sql
-|   |-- greenharvest.sql
-|-- includes/
-|-- js/
-|-- storage/
-|-- uploads/
-|-- about.php
-|-- cart.php
-|-- checkout.php
-|-- home.php
-|-- index.php
-|-- login.php
-|-- product.php
-|-- products.php
-|-- signup.php
-|-- user-dashboard.php
-|-- Dockerfile
-|-- docker-compose.yml
-|-- render.yaml
-`-- README.md
-```
-
-## Local Docker Setup
-
-Build and run the PHP app with PostgreSQL:
-
-```bash
-docker compose up --build
-```
-
-Open:
-
-```text
-http://localhost:8080/
-```
-
-Stop containers:
-
-```bash
-docker compose down
-```
-
-Remove the PostgreSQL database volume and start fresh:
-
-```bash
-docker compose down -v
-docker compose up --build
-```
-
-## Database Files
-
-- `database/greenharvest-postgres.sql` is the main database file for Render PostgreSQL and Docker PostgreSQL.
-- `database/add-product-image-data.sql` is a small migration for existing Render databases to support persistent uploaded images.
-- `database/greenharvest.sql` is kept only as a backup MySQL version.
 
 ## Render Deployment
 
@@ -116,30 +52,6 @@ This project is configured for Render free PostgreSQL.
 5. Wait for the web service and database to finish deploying.
 6. Import the PostgreSQL schema into the Render database.
 
-To import using Docker on Windows PowerShell:
-
-```powershell
-cd "C:\Users\abdel\Documents\university 3\E commerce and web application\greenharvest-farm"
-Get-Content database\greenharvest-postgres.sql | docker run --rm -i postgres:16-alpine psql "PASTE_RENDER_EXTERNAL_DATABASE_URL_HERE"
-```
-
-Use the **External Database URL** from the Render PostgreSQL dashboard for the import command. The app itself uses Render's internal `DATABASE_URL` automatically through `render.yaml`.
-
-After import, open the Render web service URL and test:
-
-```text
-/login.php
-/home.php
-/products.php
-/cart.php
-/admin/dashboard.php
-```
-
-If you already imported the database before the image persistence update, run this migration once:
-
-```powershell
-Get-Content database\add-product-image-data.sql | docker run --rm -i postgres:16-alpine psql "PASTE_RENDER_EXTERNAL_DATABASE_URL_HERE"
-```
 
 ## Environment Variables
 
@@ -156,15 +68,7 @@ ADMIN_USER=admin
 ADMIN_PASS=admin3017
 ```
 
-Render uses:
 
-```text
-DB_DRIVER=pgsql
-DATABASE_URL=<provided automatically by Render PostgreSQL>
-ADMIN_USER=admin
-ADMIN_PASS=admin3017
-PORT=80
-```
 
 ## GitHub Actions CI
 
@@ -200,9 +104,15 @@ Render free web services have an ephemeral filesystem, so the project stores upl
 ## Screenshots Checklist
 
 - Login page
-- Signup page
+  
+<img width="1867" height="902" alt="image" src="https://github.com/user-attachments/assets/6fde3eb8-179d-4e3a-9223-557f347dbf29" />
+
 - Homepage
+  <img width="1870" height="907" alt="image" src="https://github.com/user-attachments/assets/3210d3c4-7608-48b6-a40d-3a334e939d0b" />
+
 - Products page
+  <img width="1872" height="906" alt="image" src="https://github.com/user-attachments/assets/90d2a7dc-8f6f-45a3-93a3-82b5d960b2e0" />
+
 - Product details page
 - Cart page
 - Checkout page with payment methods
@@ -244,3 +154,6 @@ Render free web services have an ephemeral filesystem, so the project stores upl
 - Product reviews
 - Customer order history
 - Delivery tracking
+
+  ## Live linke :
+  https://github.com/abdelrhman-hamed7/greenharvest-farm
