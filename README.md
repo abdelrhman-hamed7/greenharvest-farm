@@ -127,5 +127,5 @@ ADMIN_PASS=admin3017
 - Customer order history
 - Delivery tracking
 
-  ## Live linke :
+  ## Live website link :
   https://github.com/abdelrhman-hamed7/greenharvest-farm
