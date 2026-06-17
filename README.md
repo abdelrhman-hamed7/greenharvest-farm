@@ -77,7 +77,7 @@ ADMIN_PASS=admin3017
 - Uploaded files are renamed to avoid conflicts.
 - Admin pages are protected by session login.
 
-## Screenshots Checklist
+## Website Checklist
 
 - Login page
   
