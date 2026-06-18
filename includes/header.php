@@ -31,7 +31,7 @@ unset($_SESSION['flash_message']);
     <link rel="icon" type="image/svg+xml" href="<?php echo $basePath; ?>assets/brand/favicon.svg?v=20260612b">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="<?php echo $basePath; ?>css/style.css?v=20260612a" rel="stylesheet">
+    <link href="<?php echo $basePath; ?>css/style.css?v=20260618a" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
